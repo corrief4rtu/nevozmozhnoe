@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Выполнить невозможное</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: #E6E6FA; /* Лавандовый цвет */
+        margin: 0;
+    }
+    h1 {
+        margin-bottom: 20px;
+        color: #333;
+    }
+    #ball {
+        width: 200px; /* Увеличенный размер шарика */
+        height: 200px;
+        border-radius: 50%;
+        background-color: #87CEEB; /* Голубой цвет */
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        text-align: center;
+        cursor: pointer;
+        position: relative;
+        transition: transform 0.2s;
+    }
+    #ball.green {
+        background-color: #4CAF50; /* Зеленый цвет при правильном имени */
+    }
+    #inputContainer {
+        margin-top: 20px;
+        display: none;
+    }
+    #inputContainer input {
+        padding: 5px;
+        font-size: 14px;
+    }
+    #message {
+        margin-top: 20px;
+        font-size: 18px;
+        color: #4CAF50;
+        display: none;
+    }
+</style>
+</head>
+<body>
+
+<h1>Нажми на шарик!</h1>
+<div id="ball">Выполнить невозможное</div>
+
+<div id="inputContainer">
+    <label for="nameInput">А как тебя зовут, напиши свое имя:</label>
+    <input type="text" id="nameInput" placeholder="Введите имя">
+</div>
+
+<div id="message">Для Аришика нет ничего невозможного 💖</div>
+
+<script>
+    const ball = document.getElementById('ball');
+    const inputContainer = document.getElementById('inputContainer');
+    const nameInput = document.getElementById('nameInput');
+    const message = document.getElementById('message');
+    let hoverCount = 0;
+    let nameConfirmed = false;
+
+    // Функция, чтобы шарик "убегал" при наведении
+    ball.addEventListener('mouseover', () => {
+        if (!nameConfirmed) {
+            // Шарик будет двигаться на большую дистанцию в разные стороны
+            const xMove = Math.random() * 600 - 300; // Двигается до 300px влево/вправо
+            const yMove = Math.random() * 600 - 300; // Двигается до 300px вверх/вниз
+            ball.style.transform = `translate(${xMove}px, ${yMove}px)`;
+            hoverCount++;
+            if (hoverCount >= 3) {
+                inputContainer.style.display = 'block';
+            }
+        }
+    });
+
+    // Проверка введенного имени
+    nameInput.addEventListener('input', () => {
+        const name = nameInput.value.trim().toLowerCase();
+        if (name === 'арина' || name === 'ариша' || name === 'аришик') {
+            ball.classList.add('green');
+            nameConfirmed = true;
+            ball.style.cursor = 'pointer';
+        } else {
+            ball.classList.remove('green');
+            nameConfirmed = false;
+        }
+    });
+
+    // Клик по шарику после ввода правильного имени
+    ball.addEventListener('click', () => {
+        if (nameConfirmed) {
+            message.style.display = 'block';
+        }
+    });
+</script>
+
+</body>
+</html>
